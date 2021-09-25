@@ -1,12 +1,12 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:destroy]
+  before_action :correct_user, only: [:show, :destroy]
   
   def index
-    if logged_in?
-      @task = current_user.tasks.build  # form_with 用
-      @pagy, @tasks = pagy(current_user.tasks.order(id: :desc))
-    end
+    #if logged_in?
+    @task = current_user.tasks.build  # form_with 用
+    @pagy, @tasks = pagy(current_user.tasks.order(id: :desc))
+    #end
   end
 
   def show
@@ -37,7 +37,7 @@ class TasksController < ApplicationController
     else
       @pagy, @microposts = pagy(current_user.tasks.order(id: :desc))
       flash.now[:danger] = 'タスクの投稿に失敗しました。'
-      render 'task/index'
+      render :new
     end
   end
 
